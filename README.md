@@ -1,38 +1,47 @@
-# Larder — family grocery list
+# Oakdene Groceries
 
-Shared list, syncs across everyone's phone via a Netlify Function backed by
-Netlify Blobs (no database account, no API keys — Netlify provisions it
-automatically).
+A premium shared family grocery web app for iPhone and Android, deployed on Netlify.
 
-## Deploy (2 minutes)
+## What it does
 
-**Easiest — Netlify CLI:**
-```
-npm install -g netlify-cli
-cd family-grocery
-npm install
-netlify deploy --prod
-```
-When prompted, create a new site. That's it — `netlify.toml` already points
-Netlify at the `netlify/functions` folder and installs `@netlify/blobs`.
+- Shared shopping list that syncs across the family
+- "At home" inventory kept separately from the shopping list
+- Expiry / best-before tracking with expiring-soon and expired alerts
+- Smart duplicate checks before adding something the family already has
+- Product memory: previously bought items, purchase history, family notes and photos
+- Camera/photo uploads stored in Netlify Blobs
+- Family price memory by supermarket, with cheapest known price highlighted
+- One-tap links to current retailer searches for Tesco, Sainsbury's, Waitrose, Ocado, Asda, Morrisons, Aldi and Co-op
+- Offline local cache and queued edits that sync when connectivity returns
+- Installable PWA experience for iPhone/Android home screens
 
-**Alternative — Git:**
-Push this folder to a GitHub repo, then in Netlify: "Add new site" → "Import
-from Git" → pick the repo. No build command needed; publish directory is `.`.
+## Data model
 
-> Plain drag-and-drop of the folder into the Netlify UI will deploy the
-> site but **won't** run `npm install` for the function's dependency, so the
-> backend will 500. Use the CLI or Git method above.
+The app deliberately separates three concepts:
 
-## Using it on iPhone/Android
+1. **Need to buy** (`needed`) — whether the product is on the shared shopping list.
+2. **At home** (`inventory`) — one or more stock lots, each with quantity and optional expiry/store/price.
+3. **History** (`purchaseHistory`) — what the family has bought before.
 
-Open the deployed URL in Safari or Chrome, then "Add to Home Screen" — it'll
-behave like a normal app icon, full width, no browser chrome.
+A product can be both at home and on the shopping list at the same time. This prevents duplicate warnings from destroying the fact that some stock is still in the house.
 
-## How data is stored
+Existing v1 data is migrated automatically. Old "previously bought" records remain history; they are not assumed to still be physically at home because the old app did not track that distinction.
 
-Everything lives server-side in a Netlify Blobs store called
-`family-grocery`, written and read through `/api/data`. Nothing is stored
-only on one device, so nobody loses the list by clearing their phone. Each
-person's name (set on first visit) is the only thing saved locally, purely
-so their name can be attached to items and comments.
+## Price comparison
+
+Oakdene records prices the family actually sees or pays and compares the latest recorded price per supermarket. Retailer buttons open each supermarket's live search for verification.
+
+Automated ingestion of all live UK supermarket prices is intentionally not scraped from retailer websites. A production-grade live feed should be added via a licensed retailer/product-pricing data source or supported API to avoid brittle, inaccurate comparisons.
+
+## Deployment
+
+Netlify is connected to the GitHub repository. Pushing to `main` triggers deployment.
+
+The app uses:
+
+- `family-grocery` Netlify Blob store for structured state
+- `family-grocery-photos` Netlify Blob store for compressed product photos
+- `netlify/functions/data.js` for conflict-safe granular mutations
+- `netlify/functions/photo.js` for image upload/retrieval
+
+No separate database or API keys are required for the current feature set.
