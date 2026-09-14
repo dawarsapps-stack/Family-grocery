@@ -1,8 +1,10 @@
 import { getDeployStore, getStore } from "@netlify/blobs";
 import type { Config, Context } from "@netlify/functions";
+import { createHash, timingSafeEqual } from "node:crypto";
 
 const STORE_NAME = "south-america-trip";
 const STATE_KEY = "shared-state";
+const OWNER_KEY_HASH = "d6f791618dfaadbd3a96975b20b5f88a8525f4546a2ca9e1b86f67804cbdf704";
 
 function storeForContext() {
   const isProduction = Netlify.context?.deploy?.context === "production";
@@ -47,10 +49,12 @@ export default async (req: Request, _context: Context) => {
   }
 
   if (req.method === "PUT") {
-    const expectedPin = Netlify.env.get("TRIP_ADMIN_PIN");
-    if (!expectedPin) return json({ error: "Owner editing has not been configured yet." }, 503);
     const suppliedPin = req.headers.get("x-admin-pin") ?? "";
-    if (suppliedPin !== expectedPin) return json({ error: "Incorrect owner PIN." }, 401);
+    const suppliedHash = createHash("sha256").update(suppliedPin).digest();
+    const expectedHash = Buffer.from(OWNER_KEY_HASH, "hex");
+    if (suppliedHash.length !== expectedHash.length || !timingSafeEqual(suppliedHash, expectedHash)) {
+      return json({ error: "Incorrect owner PIN." }, 401);
+    }
 
     let incoming: any;
     try {
