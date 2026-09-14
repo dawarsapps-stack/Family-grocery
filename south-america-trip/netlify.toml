@@ -1,5 +1,5 @@
 [build]
-  command = "tar -xzf v2.tgz"
+  command = "cat v2.p01.b64 v2.p02.b64 v2.p03.b64 v2.p04.b64 v2.p05.b64 v2.p06.b64 v2.p07.b64 v2.p08.b64 v2.p09.b64 v2.p10.b64 v2.p11.b64 v2.p12.b64 v2.p13.b64 v2.p14.b64 v2.p15.b64 v2.p16.b64 | base64 -d > v2.tgz && echo '7d5cb9cae46edfd845760fda3d1817c5eb0bc7c5e07040a73c80b181b9d62d70  v2.tgz' | sha256sum -c - && tar -xzf v2.tgz"
   publish = "public"
   functions = "netlify/functions"
 
