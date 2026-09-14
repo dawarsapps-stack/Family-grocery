@@ -1,4 +1,5 @@
 [build]
+  command = "tar -xzf v2.tgz"
   publish = "public"
   functions = "netlify/functions"
 
