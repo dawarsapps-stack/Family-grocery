@@ -1,0 +1,16 @@
+import fs from 'node:fs';
+const tripPath='public/data/trip-v2.json';
+const patch=JSON.parse(fs.readFileSync('route-patch.json','utf8'));
+const trip=JSON.parse(fs.readFileSync(tripPath,'utf8'));
+trip.version=patch.version;
+trip.routeSummary=patch.routeSummary;
+trip.criticalAlert=patch.criticalAlert;
+const replace=(arr,key,objs)=>{const map=new Map(arr.map(x=>[x[key],x]));for(const [id,obj] of Object.entries(objs))map.set(id,obj);return arr.map(x=>map.get(x[key])).concat(Object.entries(objs).filter(([id])=>!arr.some(x=>x[key]===id)).map(([,obj])=>obj));};
+trip.days=replace(trip.days,'date',patch.days);
+trip.stays=replace(trip.stays,'id',patch.stays).sort((a,b)=>a.checkIn.localeCompare(b.checkIn)||a.id.localeCompare(b.id));
+trip.transport=replace(trip.transport,'id',patch.transport);
+trip.activities=replace(trip.activities,'id',patch.activities);
+trip.bookings=replace(trip.bookings,'id',patch.bookings);
+trip.rules=trip.rules.map(r=>r.title===patch.rule.title?patch.rule:r);
+trip.places=trip.places.filter(p=>!patch.removePlaces.includes(p.id));
+fs.writeFileSync(tripPath,JSON.stringify(trip)+'\n');
