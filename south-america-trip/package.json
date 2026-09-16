@@ -1,10 +1,7 @@
 {
-  "name": "sahil-south-america-trip",
-  "version": "3.0.0",
-  "private": true,
-  "type": "module",
-  "dependencies": {
-    "@netlify/blobs": "latest",
-    "@netlify/functions": "latest"
-  }
+  "name":"sahil-south-america-trip",
+  "version":"4.0.0",
+  "private":true,
+  "type":"module",
+  "dependencies":{"@netlify/blobs":"11.0.3"}
 }

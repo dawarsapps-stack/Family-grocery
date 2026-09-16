@@ -1,12 +1,9 @@
 {
-  "name": "Sahil · South America 2026",
-  "short_name": "South America",
-  "description": "Shared planning and travel companion for the South America 2026 trip.",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#f2efe8",
-  "theme_color": "#10243a",
-  "icons": [
-    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
-  ]
+  "name":"Sahil · South America 2026",
+  "short_name":"SA 2026",
+  "start_url":"/",
+  "display":"standalone",
+  "background_color":"#f2efe8",
+  "theme_color":"#10243a",
+  "icons":[{"src":"/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
 }
