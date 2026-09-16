@@ -1,0 +1,14 @@
+{
+  "version": "9136c45cbe70f9cb9250a9d43e2745abc7335d0d",
+  "generatedAt": "2026-09-16T01:18:36.243Z",
+  "files": [
+    "app.js",
+    "icon.svg",
+    "index.html",
+    "links.js",
+    "manifest.webmanifest",
+    "planner.js",
+    "styles.css",
+    "sw.js"
+  ]
+}

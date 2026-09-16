@@ -1,0 +1,9 @@
+{
+  "name":"South America 2026",
+  "short_name":"SA 2026",
+  "start_url":"/",
+  "display":"standalone",
+  "background_color":"#f4ece7",
+  "theme_color":"#f4ece7",
+  "icons":[{"src":"/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
