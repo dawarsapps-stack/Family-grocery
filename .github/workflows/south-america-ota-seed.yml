@@ -5,6 +5,7 @@ on:
     branches: ['south-america-ota']
     paths:
       - '.github/workflows/south-america-ota-seed.yml'
+      - 'south-america-trip/ota-trigger.txt'
       - 'south-america-trip/v2.p*.b64'
       - 'south-america-trip/apply-route-patch.mjs'
       - 'south-america-trip/apply-solo-route-patch.mjs'
